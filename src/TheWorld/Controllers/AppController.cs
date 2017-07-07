@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TheWorld.Controllers
@@ -7,6 +8,16 @@ namespace TheWorld.Controllers
         public IActionResult Index()
         {
 
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        public IActionResult About()
+        {
             return View();
         }
     }
