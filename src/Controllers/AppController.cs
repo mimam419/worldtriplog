@@ -30,7 +30,15 @@ namespace TheWorld.Controllers
         [HttpPost]
         public IActionResult Contact(ContactViewModel contact)
         {
-            _mailService.SendMail(_config["MailSettings:ToAddress"], contact.Email, "From The World", contact.Message);
+            if (contact.Email.Contains("aol.com")) ModelState.AddModelError("Email", "We don't support aol addresses");
+
+            if (ModelState.IsValid)
+            {
+                _mailService.SendMail(_config["MailSettings:ToAddress"], contact.Email, "From The World", contact.Message);
+                ModelState.Clear();
+                ViewBag.UserMessage = "Message Sent successfully";
+            }
+
             return View();
         }
 
