@@ -16,8 +16,16 @@
   //   alert("He is leaving " + $(this).text());
   // })
   var $sidebarAndWrapper = $("#sidebar,#wrapper");
+  var $sidebarIcon = $("#sidebarToggle i.fa");
+
   $("#sidebarToggle").on("click", function () {
     $sidebarAndWrapper.toggleClass("hide-sidebar");
-    $sidebarAndWrapper.hasClass("hide-sidebar") ? $(this).text("Show Sidebar") : $(this).text("Hide Sidebar");
+    if ($sidebarAndWrapper.hasClass("hide-sidebar")) {
+      $sidebarIcon.removeClass("fa-angle-left");
+      $sidebarIcon.addClass("fa-angle-right");
+    } else {
+      $sidebarIcon.addClass("fa-angle-left");
+      $sidebarIcon.removeClass("fa-angle-right");
+    }
   });
 })();

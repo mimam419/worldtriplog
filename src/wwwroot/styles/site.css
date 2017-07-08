@@ -1,4 +1,4 @@
-body {
+/*body {
   font-family: sans-serif;
   font-style: 14px;
   margin: 0;
@@ -27,7 +27,7 @@ textarea {
   padding: 8px 5px;
   position: fixed;
   bottom: 0px;
-}
+}*/
 
 .headshot {
   max-width: 80px;
