@@ -15,9 +15,13 @@
      <span asp-validation-summary="ModelOnly"></span>
      <label asp-for="Name"></label>
      <input asp-for="Name" />
+     <span asp-validation-for="Name"></span>
      <label asp-for="Email"></label>
      <input type="email" asp-for="Email" />
+     <span asp-validation-for="Email"></span>
      <label asp-for="Message"></label>
      <textarea asp-for="Message" id="" cols="40" rows="4"></textarea>
+     <span asp-validation-for="Message"></span>
+     <br/>
      <input type="submit" value="Send Message" />
  </form>
