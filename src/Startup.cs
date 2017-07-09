@@ -35,9 +35,7 @@ namespace TheWorld
             {
                 services.AddScoped<IMailService, DebugMailService>();
             }
-            var conn = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<WorldContext>(options => options.UseSqlite(conn));
-
+            services.AddDbContext<WorldContext>();
             services.AddMvc();
         }
 
