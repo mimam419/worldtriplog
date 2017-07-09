@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using TheWorld.Services;
 using TheWorld.ViewModels;
 using Microsoft.Extensions.Configuration;
+using TheWorld.Models;
+using System.Linq;
 
 namespace TheWorld.Controllers
 {
@@ -10,16 +12,18 @@ namespace TheWorld.Controllers
     {
         private IMailService _mailService;
         private IConfiguration _config;
+        private WorldContext _context;
 
-        public AppController(IMailService mailService, IConfiguration config)
+        public AppController(IMailService mailService, IConfiguration config, WorldContext context)
         {
             _mailService = mailService;
             _config = config;
+            _context = context;
         }
         public IActionResult Index()
         {
-
-            return View();
+            var data = _context.Trips.ToList();
+            return View(data);
         }
 
         public IActionResult Contact()

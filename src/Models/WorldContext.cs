@@ -27,8 +27,7 @@ namespace TheWorld.Models
             var conn = _config.GetConnectionString("DefaultConnection");
             //optionsBuilder.UseSqlite(_config["ConnectionStrings__DefaultConnection"]);
             //optionsBuilder.UseSqlite("Data Source=WorldData.sqlite");
-            optionsBuilder.UseSqlite(conn);
-            Console.WriteLine(conn);
+            optionsBuilder.UseSqlite(@"{conn}");
         }
     }
 }

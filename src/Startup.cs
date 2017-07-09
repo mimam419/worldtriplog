@@ -7,7 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using TheWorld.Models;
 using TheWorld.Services;
+using System.IO;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace TheWorld
 {
@@ -31,7 +35,7 @@ namespace TheWorld
             {
                 services.AddScoped<IMailService, DebugMailService>();
             }
-            //services.AddSingleton(Configuration);
+            services.AddDbContext<WorldContext>();
             services.AddMvc();
         }
 
