@@ -13,6 +13,8 @@ using TheWorld.Services;
 using System.IO;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
+using TheWorld.ViewModels;
 
 namespace TheWorld
 {
@@ -55,7 +57,10 @@ namespace TheWorld
             {
                 factory.AddDebug(LogLevel.Error);
             }
-
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<TripViewModel, Trip>().ReverseMap();
+            });
             app.UseStaticFiles();
             app.UseBrowserLink();
 
