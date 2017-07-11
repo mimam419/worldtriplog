@@ -6,10 +6,16 @@ namespace TheWorld.Controllers.Api
 {
     public class TripsController : Controller
     {
+        private IWorldRepository _repository;
+
+        public TripsController(IWorldRepository repository)
+        {
+            _repository = repository;
+        }
         [HttpGet("api/trips")]
         public IActionResult Get()
         {
-            return Ok(new Trip() { Name = "My Trip" });
+            return Ok(_repository.GetAllTrips());
         }
     }
 }
