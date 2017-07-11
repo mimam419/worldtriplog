@@ -2,3 +2,5 @@ wwwroot/lib
 bin
 obj
 *.sqlite
+*.db
+.vscode
