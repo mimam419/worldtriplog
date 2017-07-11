@@ -22,6 +22,16 @@
                 "${workspaceRoot}/TheWorld.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "update db",
+            "suppressTaskName": true,
+            "args": [
+                "ef",
+                "database",
+                "update"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

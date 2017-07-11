@@ -21,6 +21,7 @@ namespace TheWorld
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
+                .UseDefaultServiceProvider(options => options.ValidateScopes = false)
                 .Build();
     }
 }
