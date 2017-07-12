@@ -21,7 +21,7 @@ namespace TheWorld.Controllers.Api
             _repository = repository;
             _logger = logger;
         }
-        [HttpGet("all")]
+        [HttpGet("")]
         public IActionResult Get()
         {
             try

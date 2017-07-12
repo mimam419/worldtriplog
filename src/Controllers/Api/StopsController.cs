@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TheWorld.Models;
+using TheWorld.Services;
 using TheWorld.ViewModels;
 
 namespace TheWorld.Controllers.Api
@@ -16,11 +17,13 @@ namespace TheWorld.Controllers.Api
     {
         private IWorldRepository _repository;
         private ILogger<StopsController> _logger;
+        private GeoCoordsService _coordsService;
 
-        public StopsController(IWorldRepository repository, ILogger<StopsController> logger)
+        public StopsController(IWorldRepository repository, ILogger<StopsController> logger, GeoCoordsService coordsService)
         {
             _repository = repository;
             _logger = logger;
+            _coordsService = coordsService;
         }
 
         [HttpGet("")]
@@ -46,7 +49,22 @@ namespace TheWorld.Controllers.Api
                 if (ModelState.IsValid)
                 {
                     var newStop = Mapper.Map<Stop>(stop);
+
+                    // Look for the Geocode
+                    var result = await _coordsService.GetCoordsAsync(newStop.Name);
+                    if (!result.Success)
+                    {
+                        _logger.LogError(result.Message);
+                    }
+                    else
+                    {
+                        newStop.Latitude = result.Latitude;
+                        newStop.Longitude = result.Longitude;
+                    }
+
+                    // Save to the Database
                     _repository.AddStop(tripName, newStop);
+
                     if (await _repository.SaveChangesAsync())
                     {
                         return Created($"/api/trips/{tripName}/stops/{newStop.Name}", Mapper.Map<StopViewModel>(newStop));
