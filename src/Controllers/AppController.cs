@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using TheWorld.Models;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TheWorld.Controllers
 {
@@ -25,10 +26,16 @@ namespace TheWorld.Controllers
         }
         public IActionResult Index()
         {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Trips()
+        {
             try
             {
-                var data = _repository.GetAllTrips();
-                return View(data);
+                var trips = _repository.GetAllTrips();
+                return View(trips);
             }
             catch (Exception ex)
             {
