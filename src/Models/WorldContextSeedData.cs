@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Faker;
+using Microsoft.AspNetCore.Identity;
 
 namespace TheWorld.Models
 {
@@ -11,15 +12,27 @@ namespace TheWorld.Models
     {
         private WorldContext _context;
         private int _trips;
+        private UserManager<WorldUser> _userManager;
 
-        public WorldContextSeedData(WorldContext context)
+        public WorldContextSeedData(WorldContext context, UserManager<WorldUser> userManager)
         {
             _context = context;
             _trips = 5;
+            _userManager = userManager;
         }
 
         public async Task EnsureSeedData()
         {
+            if (await _userManager.FindByEmailAsync("mubarak@example.com") == null)
+            {
+                var user = new WorldUser()
+                {
+                    UserName = "mubarak",
+                    Email = "mubarak@example.com"
+                };
+
+                await _userManager.CreateAsync(user, "P@ssw0rd!");
+            }
             if (!_context.Trips.Any())
             {
                 for (int i = 0; i <= _trips; i++)
@@ -28,7 +41,7 @@ namespace TheWorld.Models
                     {
                         DateCreated = DateTime.UtcNow,
                         Name = Faker.ISOCountryCode.Next() + "Trip",
-                        UserName = Faker.Internet.UserName(),
+                        UserName = "mubarak",
                         Stops = GetRandomStops()
                     };
                     _context.Trips.AddRange(trip);

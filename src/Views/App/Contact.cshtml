@@ -12,8 +12,8 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <h2>Contact Me</h2>
-    <form method="post">
-      <span asp-validation-summary="ModelOnly"></span>
+    <form method="post" novalidate>
+      <span asp-validation-summary="ValidationSummary.ModelOnly"></span>
       @if (ViewBag.UserMessage != null ) {
           <div>@ViewBag.UserMessage</div>
       }

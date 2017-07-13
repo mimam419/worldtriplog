@@ -19,9 +19,9 @@ namespace TheWorld.Models
             _context = context;
         }
 
-        public void AddStop(string tripName, Stop newStop)
+        public void AddStop(string tripName, Stop newStop, string username)
         {
-            var theTrip = GetTripByName(tripName);
+            var theTrip = GetUserTripByName(tripName, username);
             if (tripName != null)
             {
                 theTrip.Stops.Add(newStop);
@@ -45,6 +45,23 @@ namespace TheWorld.Models
             return _context.Trips
                 .Include(trip => trip.Stops)
                 .Where(trip => trip.Name == tripName)
+                .FirstOrDefault();
+        }
+
+        public IEnumerable<Trip> GetTripsByUsername(string username)
+        {
+            _logger.LogInformation("Getting All trips from the Database");
+            return _context.Trips
+                .Include(t => t.Stops)
+                .Where(t => t.UserName == username)
+                .ToList();
+        }
+
+        public Trip GetUserTripByName(string tripName, string username)
+        {
+            return _context.Trips
+                .Include(t => t.Stops)
+                .Where(t => t.Name == tripName && t.UserName == username)
                 .FirstOrDefault();
         }
 

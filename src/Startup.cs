@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using TheWorld.ViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TheWorld
 {
@@ -43,7 +46,36 @@ namespace TheWorld
             services.AddScoped<IWorldRepository, WorldRepository>();
             services.AddTransient<WorldContextSeedData>();
             services.AddTransient<GeoCoordsService>();
-            services.AddMvc();
+            services.AddIdentity<WorldUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;
+            })
+            .AddEntityFrameworkStores<WorldContext>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Auth/Login";
+                options.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = async ctx =>
+                    {
+                        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+                        {
+                            ctx.Response.StatusCode = 401;
+                        }
+                        else
+                        {
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+                        await Task.Yield();
+                    }
+                };
+            });
+
+            services.AddMvc(config =>
+            {
+                config.Filters.Add(new RequireHttpsAttribute());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +90,7 @@ namespace TheWorld
             {
                 factory.AddDebug(LogLevel.Error);
             }
+            app.UseAuthentication();
             Mapper.Initialize(config =>
             {
                 config.CreateMap<TripViewModel, Trip>().ReverseMap();
