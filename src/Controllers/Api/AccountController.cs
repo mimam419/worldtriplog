@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace TheWorld.Controllers.Api
 {
-    [Authorize]
+    [Route("api/account")]
     public class AccountController : Controller
     {
         private ILogger<AccountController> _logger;
@@ -23,8 +23,9 @@ namespace TheWorld.Controllers.Api
             _userManager = userManager;
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [AllowAnonymous]
+        //[Route("create")]
         public async Task<IActionResult> Create([FromBody] RegisterLoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -46,6 +47,24 @@ namespace TheWorld.Controllers.Api
             await _signInManager.SignInAsync(user, false);
 
             return Ok();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] RegisterLoginViewModel login)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Incorrect credential format");
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password, isPersistent: false, lockoutOnFailure: false);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest("Username or password is incorrect");
+            }
+
+            return Ok("Signed in successfully");
         }
     }
 }
