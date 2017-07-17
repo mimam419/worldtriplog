@@ -1,30 +1,41 @@
-"use strict";
-
 //Getting existing module
 (function() {
-  angular.module("app-trips").controller("tripsController", ["$http", tripsController]);
+  "use strict";
+
+  angular.module("app-trips")
+    .controller("tripsController", tripsController);
 
   function tripsController($http) {
     var vm = this;
 
     vm.loading = true;
 
-    $http.get(hostUrl + "/trips").then(function(response) {
-      vm.trips = response.data;
-      vm.loading = false;
-      console.log(response);
-    });
+    vm.trips = [];
+
+    $http.get("/api/trips")
+      .then(function(response) {
+        angular.copy(response.data, vm.trips);
+      }, function(err) {
+        vm.errorMessage = "Failed to load trips";
+      })
+      .finally(function() {
+        vm.loading = false;
+        console.log(response);
+      });
 
     vm.newTrip = {};
 
     vm.addTrip = function() {
       vm.newTrip.dateCreated = new Date();
-      $http.post(hostUrl + "/trips/add", vm.newTrip).then(function(response) {
-        if (response.status = 200) {
+      $http.post("/api/trips/add", vm.newTrip)
+        .then(function(response) {
           vm.trips.push(vm.newTrip);
+        }, function(err) {
+          vm.errorMessage = "Failed to post new trip";
+        })
+        .finally(function() {
           vm.newTrip = {};
-        }
-      });
+        });
     };
   };
 })();

@@ -1,7 +1,7 @@
   //Creating a module
-  const hostUrl = "http://localhost:5001/api";
-
   (function() {
+    "use strict";
+
     angular.module("app-trips", ["ngRoute"])
       .config(function($routeProvider) {
         $routeProvider.when("/", {
