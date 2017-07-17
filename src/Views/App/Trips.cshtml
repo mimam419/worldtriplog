@@ -1,61 +1,14 @@
-@model IEnumerable<TheWorld.Models.Trip>
 @{
     ViewBag.Title = "Home Page";
     Layout = "_Layout";
 }
 @section Scripts {
   <script src="~/lib/angular/angular.js"></script>
+  <script src="~/lib/angular-route/angular-route.js"></script>
   <script src="~/js/app-trips.js"></script>
   <script src="~/js/tripsController.js"></script>
 }
 
 <div class="row" ng-app="app-trips">
-  <div ng-controller="tripsController as vm" class="col-md-6 col-md-offset-3">
-    <div class="text-center" ng-if="vm.loading">
-      <div class="loader"></div>
-    </div>
-    <table ng-if="!vm.loading" class="table table-responsive table-striped">
-      <tr ng-repeat="trip in vm.trips">
-        <td>{{trip.name}}</td>
-        <td>{{trip.dateCreated | date: 'dd-MM-yyyy'}}</td>
-        <td><a href="#" class="btn btn-sm btn-primary">Manage</a></td>
-      </tr>
-    </table>
-
-    <form novalidate name="newTripForm" ng-submit="vm.addTrip()">
-      <div class="form-group">
-        <label for="">Trip Name</label>
-        <input type="text" class="form-control" id="name" name="name" ng-model="vm.newTrip.name" required ng-minlength="5" />
-        <span ng-show="newTripForm.name.$error.required" class="text-warning">Name is required</span>
-        <span ng-show="newTripForm.name.$error.minlength" class="text-warning">Name must be at least five characters</span>
-      </div>
-      <div class="form-group">
-        <input type="submit" value="Add" class="btn btn-success btn-sm" ng-disabled="newTripForm.$invalid">
-      </div>
-    </form>
-  </div>
-  <div class="col-md-6 col-xs-8">
-    <h1>The World</h1>
-    <p>This will be a fun website soon!</p>
-    
-    <form action="">
-      <div>
-        <label for="">Date</label>
-        <input type="text">
-      </div>
-      <div>
-        <label for="">location</label>
-        <input type="text">
-      </div>
-      <input type="submit" value="Add">
-    </form>
-  </div>
-  <div class="col-md-6 col-xs-4">
-    <h2>The Map</h2>
-    <ul>
-      @foreach(var item in Model) {
-        <li>@item.Name</li>
-      }
-    </ul>
-  </div>
+  <div ng-view></div>
 </div>

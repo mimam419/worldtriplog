@@ -1,23 +1,30 @@
 "use strict";
 
 //Getting existing module
-app.controller("tripsController", function($scope, $http) {
-  var vm = this;
+(function() {
+  angular.module("app-trips").controller("tripsController", ["$http", tripsController]);
 
-  vm.loading = true;
+  function tripsController($http) {
+    var vm = this;
 
-  $http.get(hostUrl + "/trips").then(function(response) {
-    vm.trips = response.data;
-    vm.loading = false;
-  })
+    vm.loading = true;
 
-  vm.newTrip = {};
-
-  vm.addTrip = function() {
-    vm.trips.push({
-      name: vm.newTrip.name,
-      dateCreated: new Date()
+    $http.get(hostUrl + "/trips").then(function(response) {
+      vm.trips = response.data;
+      vm.loading = false;
+      console.log(response);
     });
+
     vm.newTrip = {};
+
+    vm.addTrip = function() {
+      vm.newTrip.dateCreated = new Date();
+      $http.post(hostUrl + "/trips/add", vm.newTrip).then(function(response) {
+        if (response.status = 200) {
+          vm.trips.push(vm.newTrip);
+          vm.newTrip = {};
+        }
+      });
+    };
   };
-});
+})();
