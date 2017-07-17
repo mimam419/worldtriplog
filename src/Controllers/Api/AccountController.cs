@@ -26,7 +26,7 @@ namespace TheWorld.Controllers.Api
         [HttpPost("create")]
         [AllowAnonymous]
         //[Route("create")]
-        public async Task<IActionResult> Create([FromBody] RegisterLoginViewModel model)
+        public async Task<IActionResult> Create([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -34,7 +34,7 @@ namespace TheWorld.Controllers.Api
             }
             var user = new WorldUser
             {
-                UserName = model.Email,
+                UserName = model.Username,
                 Email = model.Email,
             };
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -50,14 +50,14 @@ namespace TheWorld.Controllers.Api
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] RegisterLoginViewModel login)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel login)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Incorrect credential format");
             }
 
-            var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password, isPersistent: false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {

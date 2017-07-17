@@ -11,11 +11,13 @@
 
 <div class="row" ng-app="app-trips">
   <div ng-controller="tripsController as vm" class="col-md-6 col-md-offset-3">
-    {{vm.name}}
-    <table class="table table-responsive table-striped">
+    <div class="text-center" ng-if="vm.loading">
+      <div class="loader"></div>
+    </div>
+    <table ng-if="!vm.loading" class="table table-responsive table-striped">
       <tr ng-repeat="trip in vm.trips">
         <td>{{trip.name}}</td>
-        <td>{{trip.created | date: 'dd-MM-yyyy'}}</td>
+        <td>{{trip.dateCreated | date: 'dd-MM-yyyy'}}</td>
         <td><a href="#" class="btn btn-sm btn-primary">Manage</a></td>
       </tr>
     </table>

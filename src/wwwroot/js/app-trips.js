@@ -1,5 +1,4 @@
-(function () {
-
   //Creating a module
-  angular.module("app-trips", []);
-})();
+  var app = angular.module("app-trips", []);
+
+  const hostUrl = "http://localhost:5001/api";

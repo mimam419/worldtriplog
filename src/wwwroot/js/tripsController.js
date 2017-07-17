@@ -1,31 +1,23 @@
-(function () {
-  "use strict";
+"use strict";
 
-  //Getting existing module
-  angular.module("app-trips")
-    .controller("tripsController", tripController);
+//Getting existing module
+app.controller("tripsController", function($scope, $http) {
+  var vm = this;
 
-  function tripController() {
-    var vm = this;
+  vm.loading = true;
 
-    vm.name = "Shawn Wildermuth";
+  $http.get(hostUrl + "/trips").then(function(response) {
+    vm.trips = response.data;
+    vm.loading = false;
+  })
 
-    vm.trips = [{
-      name: "US Trip",
-      created: Date.now()
-    }, {
-      name: "World Trip",
-      created: Date.now()
-    }];
+  vm.newTrip = {};
 
+  vm.addTrip = function() {
+    vm.trips.push({
+      name: vm.newTrip.name,
+      dateCreated: new Date()
+    });
     vm.newTrip = {};
-
-    vm.addTrip = function () {
-      vm.trips.push({
-        name: vm.newTrip.name,
-        created: new Date()
-      });
-      vm.newTrip = {};
-    };
   };
-})();
+});

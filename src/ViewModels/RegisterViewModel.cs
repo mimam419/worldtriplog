@@ -3,12 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheWorld.ViewModels
 {
-    public class RegisterLoginViewModel
+    public class RegisterViewModel
     {
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long", MinimumLength = 5)]
+        public string Username { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long", MinimumLength = 8)]
