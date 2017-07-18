@@ -1,10 +1,25 @@
-"use strict";
-
 //Getting existing module
 (function() {
-  angular.module("app-trips").controller("tripEditorController", ["$http", tripEditorController]);
+  "use strict";
+  angular.module("app-trips")
+    .controller("tripEditorController", tripEditorController);
 
-  function tripEditorController($http) {
+  function tripEditorController($routeParams, $http) {
     var vm = this;
+
+    vm.isBusy = true;
+    vm.stops = [];
+    vm.errorMessage = "";
+    vm.tripName = $routeParams.tripName;
+
+    $http.get("/api/trips/" + vm.tripName + "/stops")
+      .then(function(response) {
+        angular.copy(response.data, vm.stops);
+      }, function(err) {
+        vm.errorMessage = "Failed to load stops";
+      })
+      .finally(function() {
+        vm.isBusy = false;
+      });
   }
 })();

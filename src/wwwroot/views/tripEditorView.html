@@ -1,8 +1,18 @@
 <div>
-  <a href="#/" class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i>Back</a>
+  <a href="#/" class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i>&nbsp;Back</a>
   <div class="col-md-6 col-xs-8">
-    <h1>The World</h1>
-    <p>This will be a fun website soon!</p>
+    <table ng-if="!vm.isBusy" class="table table-responsive table-striped">
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Arrival</th>
+        </tr>
+      </thead>
+      <tr ng-repeat="stop in vm.stops">
+        <td>{{stop.name}}</td>
+        <td>{{stop.arrival | date: 'MM-dd-yyyy'}}</td>
+      </tr>
+    </table>
 
     <form>
       <div>
