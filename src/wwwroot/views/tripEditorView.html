@@ -1,6 +1,10 @@
 <div>
-  <a href="#/" class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i>&nbsp;Back</a>
-  <div class="col-md-6 col-xs-8">
+  <div>
+    <a href="#/" class="btn btn-sm btn-default"><i class="fa fa-angle-left"></i>&nbsp;Back</a>
+  </div>
+  <div class="col-md-3">
+    <h2>{{vm.tripName}}</h2>
+    <div class="alert alert-danger" ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
     <table ng-if="!vm.isBusy" class="table table-responsive table-striped">
       <thead>
         <tr>
@@ -17,17 +21,17 @@
     <form>
       <div>
         <label for="">Date</label>
-        <input type="text">
+        <input type="date" class="form-control">
       </div>
       <div>
         <label for="">location</label>
-        <input type="text">
+        <input type="text" class="form-control">
       </div>
       <input type="submit" value="Add" class="btn btn-success">
     </form>
   </div>
   <div class="col-md-6 col-xs-4">
     <h2>The Map</h2>
-
+    <div id="map"></div>
   </div>
 </div>
