@@ -11,8 +11,11 @@
     vm.stops = [];
     vm.errorMessage = "";
     vm.tripName = $routeParams.tripName;
+    vm.newStop = {};
 
-    $http.get("/api/trips/" + vm.tripName + "/stops")
+    vm.tripUrl = "/api/trips/" + vm.tripName + "/stops";
+
+    $http.get(vm.tripUrl)
       .then(function(response) {
         angular.copy(response.data, vm.stops);
         _showMap(vm.stops);
@@ -22,6 +25,22 @@
       .finally(function() {
         vm.isBusy = false;
       });
+
+    vm.addStop = function() {
+      vm.isBusy = true;
+
+      $http.post(vm.tripUrl + "/add", vm.newStop)
+        .then(function(response) {
+          vm.stops.push(response.data);
+          _showMap(vm.stops);
+          vm.newStop = {};
+        }, function(err) {
+          vm.errorMessage = "Failed to add new stop";
+        })
+        .finally(function() {
+          vm.isBUsy = false;
+        });
+    }
   }
 
   function _showMap(stops) {

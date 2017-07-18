@@ -5,7 +5,7 @@
   <div class="col-md-3">
     <h2>{{vm.tripName}}</h2>
     <div class="alert alert-danger" ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
-    <table ng-if="!vm.isBusy" class="table table-responsive table-striped">
+    <table ng-show="vm.stops" class="table table-responsive table-striped">
       <thead>
         <tr>
           <th>Location</th>
@@ -18,16 +18,18 @@
       </tr>
     </table>
 
-    <form>
+    <form novalidate name="newStopForm" ng-submit="vm.addStop()">
       <div>
-        <label for="">Date</label>
-        <input type="date" class="form-control">
+        <label>Date</label>
+        <input class="form-control" id="arrival" name="arrival" ng-model="vm.newStop.arrival" required ng-pattern="/^(\d{2})\/(\d{2})\/(\d{4})$/">
+        <span class="text-danger" ng-show="newStopForm.arrival.$error.required">Required</span>
       </div>
       <div>
-        <label for="">location</label>
-        <input type="text" class="form-control">
+        <label>location</label>
+        <input class="form-control" id="name" name="name" ng-model="vm.newStop.name" required ng-minlength="5">
+        <span class="text-danger" ng-show="newStopForm.name.$error.required">Required</span>
       </div>
-      <input type="submit" value="Add" class="btn btn-success">
+      <input type="submit" value="Add" class="btn btn-success" ng-disabled="newStopForm.$invalid">
     </form>
   </div>
   <div class="col-md-6 col-xs-4">
